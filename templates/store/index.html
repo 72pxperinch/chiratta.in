@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title  -->
+    <title>Chiratta | Home</title>
+
+    <!-- Favicon  -->
+    <link rel="icon" href="{% static 'store/img/core-img/favicon.ico' %}">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="{% static 'store/css/core-style.css' %}">
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+    <style>
+        .razorpay-payment-button{
+            display: none;
+        }
+    </style>
+    <script>
+        const user = '{{ user }}'
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
+</head>
+
+<body>
+    <!-- Search Wrapper Area Start -->
+    <div class="search-wrapper section-padding-100">
+        <div class="search-close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="search-content">
+                        <form action="#" method="get">
+                            <input type="search" name="search" id="search" placeholder="Type your keyword...">
+                            <button type="submit"><img src="{% static 'store/img/core-img/search.png' %}" alt=""></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search Wrapper Area End -->
+
+    <!-- ##### Main Content Wrapper Start ##### -->
+    <div class="main-content-wrapper d-flex clearfix">
+
+        <!-- Mobile Nav (max width 767px)-->
+        <div class="mobile-nav">
+            <!-- Navbar Brand -->
+            <div class="amado-navbar-brand">
+                <a href="index.html"><img src="{% static 'store/img/core-img/logo.png' %}" alt=""></a>
+            </div>
+            <!-- Navbar Toggler -->
+            <div class="amado-navbar-toggler">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <!-- Header Area Start -->
+        <header class="header-area clearfix">
+            <!-- Close Icon -->
+            <div class="nav-close">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+            <!-- Logo -->
+            <div class="logo">
+                <a href="index.html"><img src="{% static 'store/img/core-img/logo.png' %}" alt=""></a>
+            </div>
+            <!-- Amado Nav -->
+            <nav class="amado-nav">
+                <ul>
+                    <li class="active"><a href="{% url 'store' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contact' %}">CONTACT</a></li>
+                    {% if user.is_anonymous%}
+                        <li><a href="{% url 'user-register' %}">Get Started</a></li>
+                        <li><a href="{% url 'user-log-in' %}">Login</a></li>
+                    {% else %}
+                        <li><a href="{% url 'orders' %}">My Orders</a></li>
+                        <li><a href="{% url 'user-logout' %}">Logout</a></li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+            <!-- Button Group -->
+            <div class="amado-navbar-brand mt-30 mb-100">
+                <div class="mb-4">HI {% if user.is_anonymous %}GUEST{% else %}{{ user | upper }}{% endif %}</div>
+            </div>
+            <!-- Cart Menu -->
+            <div class="cart-fav-search mb-100">
+                {% if not user.is_anonymous %}
+
+                {% endif %}
+                <a href="{% url 'store-cart' %}" class="cart-nav"><img src="{% static 'store/img/core-img/cart.png' %}" alt=""> Cart <span>({% if order is not None %}{{ order.get_cart_items_count }}{% else %}0{% endif %})</span></a>
+{#                <a href="#" class="fav-nav"><img src="{% static 'store/img/core-img/favorites.png' %}" alt=""> Favourite</a>#}
+{#                <a href="#" class="search-nav"><img src="{% static 'store/img/core-img/search.png' %}" alt=""> Search</a>#}
+            </div>
+            <!-- Social Button -->
+            <div class="social-info d-flex justify-content-between">
+                {% if web.youtube_link %}
+                    <a href="{{ web.youtube_link }}" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                {% endif %}
+                {% if web.instagram_link %}
+                    <a href="{{ web.instagram_link }}" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                {% endif %}
+                {% if web.facebook_link %}
+                    <a href="{{ web.facebook_link }}" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                {% endif %}
+                {% if web.twitter_link %}
+                    <a href="{{ web.twitter_link }}" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                {% endif %}
+            </div>
+        </header>
+        <!-- Header Area End -->
+
+        {% block content %}
+
+        {% endblock content %}
+
+    </div>
+    <!-- ##### Main Content Wrapper End ##### -->
+
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer_area clearfix">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-lg-4">
+                    <div class="single_widget_area">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="index.html"><img src="{% static 'store/img/core-img/logo2.png' %}" alt=""></a>
+                        </div>
+                        <!-- Copywrite Text -->
+                        <p class="copywrite">
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+</p>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-lg-8">
+                    <div class="single_widget_area">
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <nav class="navbar navbar-expand-lg justify-content-end">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#footerNavContent" aria-controls="footerNavContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+                                <div class="collapse navbar-collapse" id="footerNavContent">
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'store-tnc' 'terms-and-conditions' %}">Terms and Condition</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'store-tnc' 'privacy-policy' %}">Privacy Policy</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'store-tnc' 'refund-and-cancellation-policy' %}">Refund and Cancellation Policy</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'store-tnc' 'shipping-policy'%}">Shipping policy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area End ##### -->
+
+    <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
+    <script src="{% static 'store/js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'store/js/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'store/js/bootstrap.min.js' %}"></script>
+    <!-- Plugins js -->
+    <script src="{% static 'store/js/plugins.js' %}"></script>
+    <!-- Active js -->
+    <script src="{% static 'store/js/active.js' %}"></script>
+
+    <script src="{% static 'store/js/cart.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <!-- Cart Area Start -->
+    <div class="cart-table-area section-padding-100">
+        <div class="container-fluid">
+            <div class="row bg-transparent">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mt-50">
+                            <li class="breadcrumb-item"><a href="{% url 'store' %}">STORE</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">SHOPPING CART</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-8">
+
+                    <div class="cart-table clearfix">
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+{#                                <td class="cart_product_img">#}
+{#                                    <a href="{% url 'store-product-detail' item.product.id %}"></a>#}
+{#                                </td>#}
+                                <td class="cart_product_desc">
+
+                                    <a href="{% url 'store-product-detail' item.product.id %}"><img src="{{ item.product.get_an_image.image_url }}" alt=""><h5 class="mt-1">{{ item.product.name }}</h5></a>
+                                </td>
+                                <td class="price">
+                                    <span>₹{{ item.product.price | floatformat:2 }}</span>
+                                </td>
+                                <td class="qty">
+                                    <div class="qty-btn d-flex">
+                                        <p>Qty</p>
+                                        <div class="quantity">
+                                            <span class="qty-minus update-cart" data-product="{{ item.product.id }}" data-action="remove"
+                                                  onclick="var effect = document.getElementById('qty{{ forloop.counter }}'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;">
+                                                <i class="fa fa-minus" aria-hidden="true"></i></span>
+                                            <input type="number" class="qty-text" id="qty{{ forloop.counter }}" step="1" min="1" max="300"
+                                                   name="quantity" value="{{ item.quantity }}">
+                                            <span class="qty-plus update-cart"  data-product="{{ item.product.id }}" data-action="add"
+                                                  onclick="var effect = document.getElementById('qty{{ forloop.counter }}'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i
+                                                    class="fa fa-plus" aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="price">
+                                    <span>₹{{ item.get_total | floatformat:2 }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="cart-summary">
+                        {% if order.id is not None %}
+                            <h5 class="mb-3">Order : #{{ order.id }}</h5>
+                        {% endif %}
+                        <h5>Cart Total</h5>
+                        <ul class="summary-table">
+                            <li><span>Subtotal:</span> <span>₹{{ order.get_cart_total | floatformat:2 }}</span></li>
+                            <li><span>Items:</span> <span>{{ order.get_cart_items_count }}</span></li>
+                            <li><span>total:</span> <span>₹{{ order.get_cart_total | floatformat:2 }}</span></li>
+                        </ul>
+                        <div class="cart-btn mt-100">
+                            <a href="{% if user.is_authenticated %}{% url 'store-checkout' %}{% else %}{% url 'user-log-in' %}{% endif %}" class="btn amado-btn w-100">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart Area End -->
+{% endblock content %}

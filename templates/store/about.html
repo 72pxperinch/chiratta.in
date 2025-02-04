@@ -1,0 +1,47 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <!-- Product Details Area Start -->
+    <div class="single-product-area section-padding-100 clearfix">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mt-50">
+                                <li class="breadcrumb-item"><a href="{% url 'store' %}">STORE</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">ABOUT</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="single_product_desc">
+                            <!-- Product Meta Data -->
+                            <div class="product-meta-data">
+                                <div class="line"></div>
+{#                                <a href="{% url 'store'%}">#}
+{#                                    <h6 class="text-uppercase">{{ web.name }}</h6>#}
+{#                                </a>#}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="{% static 'store/img/core-img/logo.png' %}" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-muted" style="margin: 0 0 0 150px">{{ web.tagline }}</p>
+                            </div>
+                            <div class="short_overview my-5">
+                                <p style="white-space: pre-line">{% if web.about_us %}{{ web.about_us }}{% else %}No description provided!{% endif %}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Product Details Area End -->
+{% endblock content %}

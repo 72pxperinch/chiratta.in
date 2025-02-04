@@ -1,0 +1,76 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <!-- Product Details Area Start -->
+    <div class="single-product-area section-padding-100 clearfix">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mt-50">
+                                <li class="breadcrumb-item"><a href="{% url 'store' %}">STORE</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-7">
+                        <div class="single_product_thumb">
+                            <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    {% for image in product.get_images %}
+                                        <li class="{% if forloop.counter is 1 %}active{% endif %}" data-target="#product_details_slider" data-slide-to="{{ forloop.counter0 }}" style="background-image: url({{ image.image_url }});">
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                                <div class="carousel-inner">
+                                    {% for image in product.get_images %}
+                                        <div class="carousel-item {% if forloop.counter is 1 %}active{% endif %}">
+                                            <a class="gallery_img" href="{{ image.image_url }}">
+                                                <img class="d-block w-100" src="{{ image.image_url }}" alt="slide{{ forloop.counter }}">
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-5">
+                        <div class="single_product_desc">
+                            <!-- Product Meta Data -->
+                            <div class="product-meta-data">
+                                <div class="line"></div>
+                                <p class="product-price">₹{{ product.price }}</p>
+                                <a href="{% url 'store-product-detail' product.id%}">
+                                    <h6>{{ product.name}}</h6>
+                                </a>
+
+                                <p class="{% if product.in_stock %}text-success{% else %}text-danger{% endif %}"><i class="fa fa-circle"></i>{% if product.in_stock %} In Stock{% else %} Out of Stock{% endif %}</p>
+                            </div>
+
+                            <div class="short_overview my-5">
+                                <p style="white-space: pre-line">{% if product.description %}{{ product.description }}{% else %}No description provided!{% endif %}</p>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="button" value="-" class="button-minus update-cart" data-field="quantity" data-product="{{ product.id }}" data-action="remove">
+                                <input type="number" step="1" max="{{ product.stock }}" value="{% for item in items %}{% if item.product == product %}{{item.quantity}}{% else %}{{ 0 }}{% endif %}{% endfor %}" name="quantity" class="quantity-field">
+                                <input type="button" value="+" class="button-plus update-cart" data-field="quantity" data-product="{{ product.id }}" data-action="add">
+                            </div>
+
+                            <!-- Add to Cart Form -->
+                            <form class="cart clearfix" method="post">
+                                <button type="submit" data-product="{{ product.id }}" data-action="add" name="addtocart" value="5" class="btn amado-btn update-cart" {% if not product.in_stock %}disabled title="This product is out of stock!" {% endif %}>Add to cart</button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Product Details Area End -->
+{% endblock content %}

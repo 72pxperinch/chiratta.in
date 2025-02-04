@@ -1,0 +1,84 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <title>{{ title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+
+</head>
+<body class="img js-fullheight" style="background-image: url({% static 'users/images/bg.jpg' %});">
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section" style="font-size: 60px;">{{ title }}</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="login-wrap p-0">
+                    <h3 class="mb-4 text-center" style="font-weight:normal;">{{ heading }}</h3>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}alert-success{% else %}alert-info{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <form action="" class="signin-form" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.username }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password1 }}
+                            <span toggle="#id_password1" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            {{ form.password2 }}
+                            <span toggle="#id_password2" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn submit px-3" style="background: #130B0B">Sign Up</button>
+                        </div>
+
+                        <div class="form-group d-md-flex">
+                            <div class="w-100 text-md-right">
+                                <a href="{% url 'user-log-in' %}" style="color: #fff">Already have an account?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'users/js/jquery.min.js' %}"></script>
+<script src="{% static 'users/js/popper.js' %}"></script>
+<script src="{% static 'users/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'users/js/main.js' %}"></script>
+<script>
+    formFields = document.getElementsByTagName('input')
+    console.log(formFields)
+    formFields[1].className = 'form-control'
+    formFields[1].placeholder = 'Username'
+    formFields[2].className = 'form-control'
+    formFields[2].placeholder = 'Email'
+    formFields[3].className = 'form-control'
+    formFields[3].placeholder = 'Password'
+    formFields[4].className = 'form-control'
+    formFields[4].placeholder = 'Confirm Password'
+</script>
+</body>
+</html>

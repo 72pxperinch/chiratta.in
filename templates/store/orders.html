@@ -1,0 +1,75 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <!-- Cart Area Start -->
+    <div class="cart-table-area section-padding-100">
+        <div class="container-fluid">
+            <div class="row bg-transparent">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mt-50">
+                            <li class="breadcrumb-item"><a href="{% url 'store' %}">STORE</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">ORDERS</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-12">
+
+                    <div class="cart-table clearfix">
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for my_order in orders %}
+                               <tr>
+                                <td>
+                                    {{ my_order.order.date_ordered }}
+                                </td>
+                                <td class="cart_product_desc">
+                                    <ol>
+                                        {% for item in my_order.items %}
+                                            <li><a href="{% url 'store-invoice' my_order.order.id %}">{{ item.product.name }} - {{ item.quantity }}</a></li>
+                                        {% endfor %}
+                                    </ol>
+                                </td>
+                                <td  class="price">
+                                    <span>₹{{ my_order.order.get_cart_total | floatformat:2 }}</span>
+                                </td>
+                                <td>
+                                    {{ my_order.order.order_status }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+{#                <div class="col-12 col-lg-4">#}
+{#                    <div class="cart-summary">#}
+{#                        {% if order.id is not None %}#}
+{#                            <h5 class="mb-3">Order : #{{ order.id }}</h5>#}
+{#                        {% endif %}#}
+{#                        <h5>Cart Total</h5>#}
+{#                        <ul class="summary-table">#}
+{#                            <li><span>Subtotal:</span> <span>₹{{ order.get_cart_total | floatformat:2 }}</span></li>#}
+{#                            <li><span>Items:</span> <span>{{ order.get_cart_items_count }}</span></li>#}
+{#                            <li><span>total:</span> <span>₹{{ order.get_cart_total | floatformat:2 }}</span></li>#}
+{#                        </ul>#}
+{#                        <div class="cart-btn mt-100">#}
+{#                            <a href="{% if user.is_authenticated %}{% url 'store-checkout' %}{% else %}{% url 'user-log-in' %}{% endif %}" class="btn amado-btn w-100">Checkout</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+    <!-- Cart Area End -->
+{% endblock content %}

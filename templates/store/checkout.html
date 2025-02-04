@@ -1,0 +1,125 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <!-- Checkout Area Start -->
+    <div class="cart-table-area section-padding-100">
+        <div class="container-fluid">
+            <div class="row bg-transparent">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mt-50">
+                            <li class="breadcrumb-item"><a href="{% url 'store' %}">STORE</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">CHECKOUT</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            {% if messages %}
+                <div class="row">
+                    <div class="col-md-12 mt-2 mb-2">
+                    {% for message in messages %}
+                        <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}alert-success{% else %}alert-info{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="checkout_details_area mt-100 clearfix">
+                        <form action="{% url 'store-save_checkout' %}" id="checkout-form" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}"
+                                           placeholder="First Name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}"
+                                           placeholder="Last Name" required>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ user.email }}" required>
+                                </div>
+                                <div class="col-12 mt-3 mb-3">
+                                    <h5 class="text-uppercase">ADDRESS</h5>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="{{ address.country }}" required>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <input type="text" class="form-control mb-3" id="street_address" name="street_address"
+                                           placeholder="Address" value="{{ address.address }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="city" placeholder="Town" name="city" value="{{ address.city }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="state" placeholder="State" name="state" value="{{ address.state }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="pin_code" name="pin_code" placeholder="Pin Code"
+                                           value="{{ address.pin_code }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="number" class="form-control" id="phone_number" name="phone_number" min="0"
+                                           placeholder="Phone No" value="{{ address.mobile }}" required>
+                                </div>
+                            </div>
+                            <div class="cart-btn mt-5">
+                                <input type="submit" class="btn amado-btn w-100" value="CHECKOUT">
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="cart-summary">
+                        {% if order.id is not None %}
+                            <h5 class="mb-3">Order : #{{ order.id }}</h5>
+                            <div class="cart-table clearfix">
+                                <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+                                <td class="cart_product_desc">
+
+                                    <a href="{% url 'store-product-detail' item.product.id %}"><p class="mt-1">{{ item.product.name }}</p></a>
+                                </td>
+                                <td class="price">
+                                    <p>₹{{ item.product.price | floatformat:2 }}</p>
+                                </td>
+                                <td class="qty text-center">
+                                    <p>{{ item.quantity }}</p>
+                                </td>
+                                <td class="price">
+                                    <p>₹{{ item.get_total | floatformat:2 }}</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                            </div>
+                        {% endif %}
+                        <h5>Cart Total</h5>
+                        <ul class="summary-table">
+                            <li><span>subtotal:</span> <span>₹{{ order.get_cart_total | floatformat:2 }}</span></li>
+                            <li><span>Items:</span> <span>{{ order.get_cart_items_count }}</span></li>
+                            <li><span>total:</span> <span>₹{{ order.get_cart_total | floatformat:2 }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout Area End -->
+{% endblock content %}
+

@@ -1,0 +1,96 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+    <!-- Product Details Area Start -->
+    <div class="single-product-area section-padding-100 clearfix">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mt-50">
+                                <li class="breadcrumb-item"><a href="{% url 'store' %}">STORE</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">CONTACT</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="single_product_desc">
+                            <!-- Product Meta Data -->
+                            <div class="product-meta-data">
+                                <div class="line"></div>
+{#                                <a href="{% url 'store'%}">#}
+{#                                    <h6 class="text-uppercase">{{ web.name }}</h6>#}
+{#                                </a>#}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="{% static 'store/img/core-img/logo.png' %}" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-muted" style="margin: 0 0 0 150px">{{ web.tagline }}</p>
+                            </div>
+                            <div class="short_overview my-5">
+                                <address>
+                                    <dl>
+                                        <dt>
+                                            Address :
+                                        </dt>
+                                        <dd>
+                                            {% if web.address %}{{ web.address }}{% else %}No address provided!{% endif %},<br>
+                                                {% if web.city %}{{ web.city }}{% else %}No city provided!{% endif %},
+                                                {% if web.state %}{{ web.state }}{% else %}No state provided!{% endif %},<br>
+                                                {% if web.country %}{{ web.country }}{% else %}No country provided!{% endif %},
+                                                {% if web.pin_code %}{{ web.pin_code }} (PIN) {% else %}No pincode provided!{% endif %}
+                                        </dd>
+                                        <dt>Email : {% if web.email %}<a class="text-muted" style="font-size: larger" href="mailto:{{ web.email }}">{{ web.email }}</a>{% else %}No email provided!{% endif %}</dt>
+                                        <dt>Phone : {% if web.mobile %}<a class="text-muted" style="font-size: larger" href="tel:{{ web.mobile }}">{{ web.mobile }}</a>{% else %}No phone provided!{% endif %}</dt>
+                                    </dl>
+                                </address>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <h3>WRITE TO US...</h3>
+                        <div class="checkout_details_area mt-100 clearfix">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}alert-success{% else %}alert-info{% endif %}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <form action="{% url 'contact' %}" id="contact-form" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}"
+                                           placeholder="First Name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}"
+                                           placeholder="Last Name" required>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ user.email }}" required>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <textarea type="text" class="form-control" id="message" name="message" placeholder="Message"  required></textarea>
+                                </div>
+                            </div>
+                            <div class="cart-btn mt-5">
+                                <input type="submit" class="btn amado-btn w-100" value="SEND MESSAGE">
+                        </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Product Details Area End -->
+{% endblock content %}
