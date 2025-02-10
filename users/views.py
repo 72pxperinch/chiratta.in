@@ -8,20 +8,50 @@ from django.contrib.auth.models import Group
 
 from store.models import Web
 
-web = Web.objects.first()
 
 # Create your views here.
+# def register_view(request):
+#     web = Web.objects.first()
+#     form = CreateUserForm()
+
+#     if request.method == 'POST':
+#         form = CreateUserForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             customer_group = Group.objects.get(name='customers')
+#             if not customer_group:
+#                 customer_group = Group.objects.create(name='customers')
+#             customer_group.user_set.add(user)
+#             messages.success(request, 'You are successfully registered!')
+#             return redirect('user-log-in')
+#         else:
+#             for key in form.errors:
+#                 message = form.errors[key]
+#                 if form.errors[key] == 'This field is required.':
+#                     message = key + " field is required"
+#                 messages.add_message(request, messages.ERROR, message)
+
+#     context = {
+#         'title': web.name.upper(),
+#         'heading': "Don't have an account?",
+#         'form': form
+#     }
+#     return render(request, 'users/register.html', context)
+
 def register_view(request):
+    web = Web.objects.first()
     form = CreateUserForm()
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            customer_group = Group.objects.get(name='customers')
-            if not customer_group:
-                customer_group = Group.objects.create(name='customers')
+            # Using get_or_create to avoid DoesNotExist error
+            customer_group, created = Group.objects.get_or_create(name='customers')
+            
+            # Adding the user to the group
             customer_group.user_set.add(user)
+            
             messages.success(request, 'You are successfully registered!')
             return redirect('user-log-in')
         else:
@@ -39,7 +69,9 @@ def register_view(request):
     return render(request, 'users/register.html', context)
 
 
+
 def login_view(request):
+    web = Web.objects.first()
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -60,10 +92,12 @@ def login_view(request):
 
 
 def logout_view(request):
+    web = Web.objects.first()
     logout(request)
     return redirect('user-log-in')
 
 
 def test_view(request):
+    web = Web.objects.first()
     customer = request.user
     return redirect('store')
