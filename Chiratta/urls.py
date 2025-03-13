@@ -26,5 +26,5 @@ urlpatterns = [
     path('', include('store.urls')),
     path('register/', register_view, name='user-register'),
     path('login/', login_view, name='user-log-in'),
-    path('logout/', login_view, name='user-logout'),
+    path('logout/', logout_view, name='user-logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
